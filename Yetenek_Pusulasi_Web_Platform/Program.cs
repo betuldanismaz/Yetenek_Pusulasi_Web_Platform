@@ -1,6 +1,9 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Yetenek_Pusulasi_Web_Platform.Data;
+using Yetenek_Pusulasi_Web_Platform.Services;
+using Yetenek_Pusulasi_Web_Platform.Services.Interfaces;
+using Yetenek_Pusulasi_Web_Platform.Services.Factories;
 
 namespace Yetenek_Pusulasi_Web_Platform
 {
@@ -15,10 +18,18 @@ namespace Yetenek_Pusulasi_Web_Platform
             builder.Services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(connectionString));
             builder.Services.AddDatabaseDeveloperPageExceptionFilter();
-
+            builder.Services.AddControllersWithViews();
             builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = false)
                 .AddEntityFrameworkStores<ApplicationDbContext>();
             builder.Services.AddRazorPages();
+
+            // Servislerimizi kaydediyoruz
+            builder.Services.AddScoped<IScenarioService, ScenarioService>();
+
+            // Factory ve bağımlı olduğu içerik üreteçlerini kaydet
+            builder.Services.AddTransient<ProblemSolvingContentGenerator>();
+            builder.Services.AddTransient<EmpathyContentGenerator>();
+            builder.Services.AddScoped<IScenarioFactory, ScenarioFactory>();
 
             var app = builder.Build();
 
@@ -40,6 +51,11 @@ namespace Yetenek_Pusulasi_Web_Platform
             app.UseRouting();
 
             app.UseAuthorization();
+
+            // MVC için varsayılan route
+            app.MapControllerRoute(
+               name: "default",
+               pattern: "{controller=Home}/{action=Index}/{id?}");
 
             app.MapRazorPages();
 
