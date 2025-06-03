@@ -1,9 +1,8 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Yetenek_Pusulasi_Web_Platform.Data;
-using Yetenek_Pusulasi_Web_Platform.Services;
 using Yetenek_Pusulasi_Web_Platform.Services.Interfaces;
-using Yetenek_Pusulasi_Web_Platform.Services.Factories;
+using Yetenek_Pusulasi_Web_Platform.Services.Interfaces.Factories;
 
 namespace Yetenek_Pusulasi_Web_Platform
 {
